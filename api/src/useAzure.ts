@@ -2,6 +2,7 @@ import axios from 'axios'
 import Koa from 'koa'
 import log from 'loglevel'
 import { AZURE_STATS } from '.'
+import displayName from './displayName'
 
 type Translation = {
   detectedLanguage: {
@@ -15,8 +16,8 @@ type Translation = {
 }[]
 
 const useAzure = async (ctx: Koa.Context, next: Koa.Next) => {
-  const text = ctx.request.body.text
-  const source = ctx.request.body.source
+  const text: string[] = ctx.state.original.text
+  const source = ctx.state.original.source
   const target = ctx.params.target
 
   if (
@@ -32,7 +33,7 @@ const useAzure = async (ctx: Koa.Context, next: Koa.Next) => {
     try {
       const { data } = await axios.post<Translation>(
         'https://api.cognitive.microsofttranslator.com/translate',
-        [{ text }],
+        text.map(t => ({ text: t })),
         {
           params: {
             'api-version': '3.0',
@@ -50,7 +51,11 @@ const useAzure = async (ctx: Koa.Context, next: Koa.Next) => {
       log.debug('Azure', 'Translated')
       ctx.response.body = {
         provider: 'Azure',
-        text: data[0].translations[0].text
+        sourceLanguage: displayName({
+          source: source || data[0].detectedLanguage.language,
+          target
+        }),
+        text: data.map(d => d.translations[0].text)
       }
     } catch (err) {
       log.debug('Azure', err.response.data?.error)

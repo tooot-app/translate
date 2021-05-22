@@ -10,6 +10,7 @@
       "ES2016",
       "ES2017",
       "ES2018",
+      "ES2020",
       "ESNEXT"
     ],
     "declaration": true,

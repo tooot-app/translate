@@ -12,6 +12,8 @@ import useIBM from './useIBM'
 import useAzure from './useAzure'
 import returnHealth from './returnHealth'
 import { crons } from './cron'
+import checkKey from './checkKey'
+import prepareOriginal from './prepareOriginal'
 
 type Stats = {
   counts: {
@@ -70,7 +72,10 @@ const main = async () => {
   router.get('/health', returnHealth)
   router.get(
     '/translate/:instance/:id/:target',
-    // { source?: string, text: string[] }
+    // -> headers { source?: string, text: string[] }
+    // <- { provider: string, sourceLanguage: string, text: string[] }
+    checkKey,
+    prepareOriginal,
     useIBM,
     useAzure,
     useDeepL,
