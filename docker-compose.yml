@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  caddy:
+    container_name: caddy
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./data/caddy/Caddyfile.dev:/etc/caddy/Caddyfile
+      - ./data/caddy/config:/config
+      - ./data/caddy/data:/data
+    image: caddy:alpine
+
+  libretranslate:
+    container_name: libretranslate
+    restart: unless-stopped
+    volumes:
+      - ./data/libretranslate/api_keys.db:/app/api_keys.db
+      - ./data/libretranslate/LibreTranslate:/root/.local/share/LibreTranslate
+      - ./data/libretranslate/argos-translate:/root/.local/share/argos-translate
+    image: libretranslate/libretranslate:latest
+    command: --req-limit 0 --frontend-language-target en --api-keys
