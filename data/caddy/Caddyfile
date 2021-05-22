@@ -1,5 +1,5 @@
 translate.tooot.app {
-  reverse_proxy api:5000
+  reverse_proxy translate:5000
   encode zstd gzip
 }
 

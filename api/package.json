@@ -5,7 +5,7 @@
       "node": "14.x",
       "yarn": "1.x"
    },
-   "description": "Translation relay service for tooot",
+   "description": "Translation service for tooot",
    "author": "xmflsct <me@xmflsct.com>",
    "license": "GPL-3.0-or-later",
    "repository": {

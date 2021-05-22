@@ -22,3 +22,11 @@ services:
       - ./data/libretranslate/argos-translate:/root/.local/share/argos-translate
     image: libretranslate/libretranslate:latest
     command: --req-limit 0 --frontend-language-target en --api-keys
+
+  translate:
+    container_name: translate
+    restart: always
+    env_file: .env
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:5000/v1/health || exit 1"]
+    image: ghcr.io/tooot-app/translate:latest

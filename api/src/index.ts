@@ -11,6 +11,7 @@ import useLibre from './useLibre'
 import useIBM from './useIBM'
 import useAzure from './useAzure'
 import returnHealth from './returnHealth'
+import { crons } from './cron'
 
 type Stats = {
   counts: {
@@ -45,6 +46,10 @@ export const IBM_STATS: Stats = {
 }
 
 const main = async () => {
+  log.debug('Stats', 'updating')
+  await crons()
+  log.debug('Stats', 'updated')
+
   const app = new Koa()
   const router = new Router({
     prefix: `/${VERSION}`
