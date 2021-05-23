@@ -1,4 +1,6 @@
 import Koa from 'koa'
+import log from 'loglevel'
+import sanitize from 'sanitize-html'
 
 const prepareOriginal = async (ctx: Koa.Context, next: Koa.Next) => {
   if (
@@ -18,7 +20,28 @@ const prepareOriginal = async (ctx: Koa.Context, next: Koa.Next) => {
     ctx.throw(400)
   }
 
+  log.debug('Original', original.text)
+  original.text = original.text.map((t: string) =>
+    sanitize(t, {
+      allowedTags: ['p', 'br'],
+      allowedAttributes: {},
+      nonTextTags: ['style', 'script', 'textarea', 'option', 'a'],
+      exclusiveFilter: frame => frame.tag !== 'br' && !frame.text.trim()
+    }).trim()
+  )
+  log.debug('Sanitized', original.text)
+
+  const cleaned = original.text.map((t: string) =>
+    sanitize(t, {
+      allowedTags: [],
+      allowedAttributes: {},
+      nonTextTags: ['style', 'script', 'textarea', 'option', 'a'],
+      exclusiveFilter: frame => frame.tag !== 'br' && !frame.text.trim()
+    }).trim()
+  )
+
   ctx.state.original = original
+  ctx.state.cleaned = cleaned
 
   await next()
 }

@@ -14,7 +14,7 @@ type Translation = {
 }
 
 const useLibre = async (ctx: Koa.Context, next: Koa.Next) => {
-  const text: string[] = ctx.state.original.text
+  const text: string[] = ctx.state.cleaned
   const source = ctx.state.original.source
   const target = ctx.params.target
 
@@ -34,7 +34,7 @@ const useLibre = async (ctx: Koa.Context, next: Koa.Next) => {
       detected = sortBy(detections.data, d => -d.confidence)[0].language
     } catch (err) {
       log.debug('tooot', err.response.data?.error)
-      await next()
+      ctx.throw(500)
     }
   }
 
@@ -65,7 +65,7 @@ const useLibre = async (ctx: Koa.Context, next: Koa.Next) => {
     }
   } catch (err) {
     log.debug('tooot', err.response.data?.error)
-    await next()
+    ctx.throw(500)
   }
 }
 

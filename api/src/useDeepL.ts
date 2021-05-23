@@ -31,6 +31,7 @@ const useDeepL = async (ctx: Koa.Context, next: Koa.Next) => {
       for (const t of text) {
         params.append('text', t)
       }
+      params.append('tag_handling', 'xml')
       const { data } = await axios.post<Translation>(
         'https://api-free.deepl.com/v2/translate',
         undefined,

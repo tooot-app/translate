@@ -6,6 +6,8 @@ const checkKey = async (ctx: Koa.Context, next: Koa.Next) => {
     ctx.throw(403)
   }
 
+  ctx.set('Cache-Control', 'max-age=1209600')
+
   await next()
 }
 

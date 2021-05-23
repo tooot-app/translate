@@ -8,7 +8,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./data/caddy/Caddyfile.dev:/etc/caddy/Caddyfile
+      - ./data/caddy/Caddyfile:/etc/caddy/Caddyfile
       - ./data/caddy/config:/config
       - ./data/caddy/data:/data
     image: caddy:alpine

@@ -37,7 +37,8 @@ const useAzure = async (ctx: Koa.Context, next: Koa.Next) => {
         {
           params: {
             'api-version': '3.0',
-            to: target
+            to: target,
+            textType: 'html'
           },
           headers: {
             'Ocp-Apim-Subscription-Key':
