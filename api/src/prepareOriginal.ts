@@ -20,6 +20,8 @@ const prepareOriginal = async (ctx: Koa.Context, next: Koa.Next) => {
     ctx.throw(400)
   }
 
+  original.source = original.source.slice(0, 2)
+
   log.debug('Original', original.text)
   original.text = original.text.map((t: string) =>
     sanitize(t, {
