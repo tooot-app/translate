@@ -71,7 +71,7 @@ const main = async () => {
 
   router.get('/health', returnHealth)
   router.get(
-    '/translate/:instance/:id/:target',
+    '/translate/:base64/:target',
     // -> headers { source?: string, text: string[] }
     // <- { provider: string, sourceLanguage: string, text: string[] }
     checkKey,
