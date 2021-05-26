@@ -10,7 +10,7 @@ const prepareOriginal = async (ctx: Koa.Context, next: Koa.Next) => {
     ctx.throw(400)
   }
 
-  let original
+  let original: { source?: string; text: string[] }
   try {
     const data = Buffer.from(ctx.request.headers.original, 'base64').toString(
       'utf8'
@@ -20,7 +20,7 @@ const prepareOriginal = async (ctx: Koa.Context, next: Koa.Next) => {
     ctx.throw(400)
   }
 
-  original.source = original.source.slice(0, 2)
+  original.source = original.source?.slice(0, 2)
 
   log.debug('Original', original.text)
   original.text = original.text.map((t: string) =>
