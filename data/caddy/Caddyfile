@@ -2,8 +2,3 @@ translate.tooot.app {
   reverse_proxy translate:5000
   encode zstd gzip
 }
-
-libretranslate.tooot.app {
-  reverse_proxy libretranslate:5000
-  encode zstd gzip
-}

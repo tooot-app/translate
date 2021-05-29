@@ -15,13 +15,12 @@ services:
 
   libretranslate:
     container_name: libretranslate
-    restart: unless-stopped
+    restart: always
     volumes:
-      - ./data/libretranslate/api_keys.db:/app/api_keys.db
       - ./data/libretranslate/LibreTranslate:/root/.local/share/LibreTranslate
       - ./data/libretranslate/argos-translate:/root/.local/share/argos-translate
     image: libretranslate/libretranslate:latest
-    command: --req-limit 0 --frontend-language-target en --api-keys
+    command: --frontend-language-target en
 
   translate:
     container_name: translate

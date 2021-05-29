@@ -15,9 +15,8 @@ const useLibre = async (ctx: Koa.Context, next: Koa.Next) => {
   log.debug('tooot', 'Translating')
   try {
     const res = await axios.post<Translation>(
-      'https://libretranslate.tooot.app/translate',
+      'http://libretranslate:5000/translate',
       {
-        api_key: process.env.LIBRE_API_KEY,
         source: source || 'auto',
         target: target,
         q: text
