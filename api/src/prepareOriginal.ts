@@ -16,11 +16,21 @@ const prepareOriginal = async (ctx: Koa.Context, next: Koa.Next) => {
       'utf8'
     )
     original = JSON.parse(data)
-  } catch {
+  } catch (err) {
+    log.info('prepareOriginal', err)
     ctx.throw(400)
   }
 
-  original.source = original.source?.slice(0, 2)
+  // https://github.com/google/cld3#supported-languages
+  // Remove some confusing languages, like new and old Norwegian shown as only `no`
+  switch (original.source) {
+    case 'no':
+      original.source = undefined
+      break
+    default:
+      original.source = original.source?.slice(0, 2)
+      break
+  }
 
   log.debug('Original', original.text)
   original.text = original.text.map((t: string) =>

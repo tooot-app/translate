@@ -16,7 +16,7 @@ type Languages = {
 const cronDeepL = async () => {
   const auth_key = process.env.DEEPL_AUTH_KEY
   if (!auth_key) {
-    log.error('cron DeepL', 'missing auth key')
+    log.info('cron DeepL', 'missing auth key')
     throw new Error()
   }
 

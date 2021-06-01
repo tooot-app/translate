@@ -30,7 +30,7 @@ const useLibre = async (ctx: Koa.Context, next: Koa.Next) => {
       text: res.data.translatedText
     }
   } catch (err) {
-    log.debug('tooot', err.response.data?.error)
+    log.info('tooot', err.response.data?.error)
     ctx.throw(500)
   }
 }

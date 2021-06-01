@@ -57,7 +57,9 @@ const main = async () => {
     prefix: `/${VERSION}`
   })
 
-  process.env.NODE_ENV !== 'production' ? log.enableAll() : log.disableAll()
+  process.env.NODE_ENV !== 'production'
+    ? log.enableAll()
+    : log.setLevel('INFO')
   process.env.NODE_ENV !== 'production' && app.use(logger())
 
   app.use(

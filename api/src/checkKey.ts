@@ -1,8 +1,9 @@
 import Koa from 'koa'
+import log from 'loglevel'
 
 const checkKey = async (ctx: Koa.Context, next: Koa.Next) => {
   if (ctx.request.headers.key !== process.env.API_KEY) {
-    console.log(ctx.request.headers)
+    log.info('checkKey', ctx.request.headers)
     ctx.throw(403)
   }
 

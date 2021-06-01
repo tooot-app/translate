@@ -31,19 +31,19 @@ const cronAzure = async () => {
   const secret = process.env.AZURE_AUTH_CLIENT_SECRET
   const tenantId = process.env.AZURE_AUTH_TENANT_ID
   if (!clientId || !secret || !tenantId) {
-    log.error('cron Azure', 'missing credentials')
+    log.info('cron Azure', 'missing credentials')
     return
   }
 
   const subscriptionId = process.env.AZURE_SUBSCRIPTION_ID
   if (!subscriptionId) {
-    log.error('cron Azure', 'missing subscription ID')
+    log.info('cron Azure', 'missing subscription ID')
     return
   }
 
   const subscriptionKey = process.env.AZURE_TRANSLATE_SUBSCRIPTION_KEY
   if (!subscriptionKey) {
-    log.error('cron Azure', 'missing translator subscription key')
+    log.info('cron Azure', 'missing translator subscription key')
     throw new Error()
   }
 

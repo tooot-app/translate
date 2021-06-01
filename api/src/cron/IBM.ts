@@ -5,30 +5,29 @@ import { uniq } from 'lodash'
 import log from 'loglevel'
 import { IBM_STATS } from '../index'
 
-const cronIBM = async () => {
-  const apikey = process.env.IBM_AUTH_API_KEY
-  if (!apikey) {
-    log.error('cron IBM', 'missing api key')
-    throw new Error()
-  }
+const apikey = process.env.IBM_AUTH_API_KEY
+if (!apikey) {
+  log.info('cron IBM', 'missing api key')
+  throw new Error()
+}
+export const IBMauthenticator = new IamAuthenticator({ apikey })
 
+const cronIBM = async () => {
   const accountId = process.env.IBM_AUTH_ACCOUNT_ID
   const resourceId = process.env.IBM_AUTH_RESOURCE_ID
   if (!accountId || !resourceId) {
-    log.error('cron IBM', 'missing auth details')
+    log.info('cron IBM', 'missing auth details')
     return
   }
 
   const instance = process.env.IBM_TRANSLATE_INSTANCE
   if (!instance) {
-    log.error('cron IBM', 'missing instance')
+    log.info('cron IBM', 'missing instance')
     throw new Error()
   }
 
-  const authenticator = new IamAuthenticator({ apikey })
-
   const usage = await UsageReportsV4.newInstance({
-    authenticator
+    authenticator: IBMauthenticator
   }).getResourceUsageAccount({
     accountId,
     billingmonth: `${new Date().getFullYear()}-${new Date().getMonth() + 1}`,
@@ -40,7 +39,7 @@ const cronIBM = async () => {
     : 0
 
   const languageTranslator = new LanguageTranslatorV3({
-    authenticator,
+    authenticator: IBMauthenticator,
     serviceUrl: `https://api.eu-de.language-translator.watson.cloud.ibm.com/instances/${instance}`,
     version: '2018-05-01'
   })

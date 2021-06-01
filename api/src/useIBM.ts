@@ -1,8 +1,8 @@
-import { IamAuthenticator } from 'ibm-watson/auth'
 import LanguageTranslatorV3 from 'ibm-watson/language-translator/v3'
 import Koa from 'koa'
 import log from 'loglevel'
 import { IBM_STATS } from '.'
+import { IBMauthenticator } from './cron/IBM'
 import displayName from './displayName'
 
 const useIBM = async (ctx: Koa.Context, next: Koa.Next) => {
@@ -22,9 +22,7 @@ const useIBM = async (ctx: Koa.Context, next: Koa.Next) => {
     log.debug('IBM', 'Translating')
 
     const languageTranslator = new LanguageTranslatorV3({
-      authenticator: new IamAuthenticator({
-        apikey: process.env.IBM_AUTH_API_KEY!
-      }),
+      authenticator: IBMauthenticator,
       serviceUrl: `https://api.eu-de.language-translator.watson.cloud.ibm.com/instances/${process.env.IBM_TRANSLATE_INSTANCE}`,
       version: '2018-05-01'
     })
@@ -44,7 +42,7 @@ const useIBM = async (ctx: Koa.Context, next: Koa.Next) => {
         text: res.result.translations.map(t => t.translation)
       }
     } catch (err) {
-      log.debug('IBM', err)
+      log.info('IBM', err)
       await next()
     }
   }

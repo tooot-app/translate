@@ -48,7 +48,7 @@ const useDeepL = async (ctx: Koa.Context, next: Koa.Next) => {
         text: data.translations.map(t => t.text)
       }
     } catch (err) {
-      log.debug('DeepL', err.response.data?.error)
+      log.info('DeepL', err.response.data?.error)
       await next()
     }
   }

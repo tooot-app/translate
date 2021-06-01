@@ -59,7 +59,7 @@ const useAzure = async (ctx: Koa.Context, next: Koa.Next) => {
         text: data.map(d => d.translations[0].text)
       }
     } catch (err) {
-      log.debug('Azure', err.response.data?.error)
+      log.info('Azure', err.response.data?.error)
       if (err.response?.data?.error?.code == 403001) {
         log.debug('Azure', 'Out of limit')
         AZURE_STATS.counts.current = 2000000
